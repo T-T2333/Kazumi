@@ -34,11 +34,6 @@
           - name: Get Flutter dependencies
             run: flutter pub get
             shell: bash
-          - name: Install native build tools
-            run: |
-              sudo apt-get update
-              sudo apt-get install -y cmake ninja-build g++
-            shell: bash
           - name: Run Flutter tests
             run: flutter test
             shell: bash
@@ -420,8 +415,6 @@
               channel: stable
               flutter-version-file: pubspec.yaml
           - run: flutter pub get
-          - name: Install native build tools
-            run: brew install cmake ninja
           - name: Build IPA
             run: >-
               flutter build ios --release --no-codesign
@@ -460,8 +453,6 @@
               channel: stable
               flutter-version-file: pubspec.yaml
           - run: flutter pub get
-          - name: Install native build tools
-            run: brew install cmake ninja
           - run: >-
               flutter build macos --release
               --dart-define=DANDANAPI_APPID=$DANDANAPI_APPID
@@ -499,8 +490,6 @@
               distribution: 'temurin'          
           - name: Setup Android SDK
             uses: android-actions/setup-android@v3
-            with:
-              packages: 'platform-tools'
           - name: Setup Android build tools
             run: sdkmanager "build-tools;34.0.0"
   

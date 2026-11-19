@@ -34,11 +34,6 @@
           - name: Get Flutter dependencies
             run: flutter pub get
             shell: bash
-          - name: Install native build tools
-            run: |
-              sudo apt-get update
-              sudo apt-get install -y cmake ninja-build g++
-            shell: bash
           - name: Run Flutter tests
             run: flutter test
             shell: bash
@@ -81,10 +76,10 @@
               sudo apt-get update
               sudo apt-get install -y clang cmake libgtk-3-dev ninja-build libayatana-appindicator3-dev libasound2-dev
             shell: bash
-          - name: Set up JDK 21
+          - name: Set up JDK 17
             uses: actions/setup-java@v4
             with:
-              java-version: '21'
+              java-version: '17'
               distribution: 'temurin'          
           - name: Set up Flutter
             uses: subosito/flutter-action@v2.16.0
@@ -300,8 +295,7 @@
               Homepage: https://github.com/Predidit/Kazumi
               Depends: libayatana-appindicator3-1,
                        gir1.2-ayatanaappindicator3-0.1,
-                       libwebkit2gtk-4.1-0,
-                       libva-wayland2
+                       libwebkit2gtk-4.1-0
               EOF
 
               cp ../assets/linux/io.github.Predidit.Kazumi.desktop usr/share/applications
@@ -384,8 +378,7 @@
               Homepage: https://github.com/Predidit/Kazumi
               Depends: libayatana-appindicator3-1,
                        gir1.2-ayatanaappindicator3-0.1,
-                       libwebkit2gtk-4.1-0,
-                       libva-wayland2
+                       libwebkit2gtk-4.1-0
               EOF
 
               cp ../assets/linux/io.github.Predidit.Kazumi.desktop usr/share/applications
@@ -406,7 +399,7 @@
       flutter-build-ios:
         name: "Release for iOS"
         needs: [flutter-test, flutter-analyze]
-        runs-on: "xcode-27"
+        runs-on: "macos-latest"
         permissions: write-all
 
         steps:
@@ -422,8 +415,6 @@
               channel: stable
               flutter-version-file: pubspec.yaml
           - run: flutter pub get
-          - name: Install native build tools
-            run: brew install cmake ninja
           - name: Build IPA
             run: >-
               flutter build ios --release --no-codesign
@@ -462,8 +453,6 @@
               channel: stable
               flutter-version-file: pubspec.yaml
           - run: flutter pub get
-          - name: Install native build tools
-            run: brew install cmake ninja
           - run: >-
               flutter build macos --release
               --dart-define=DANDANAPI_APPID=$DANDANAPI_APPID
@@ -494,15 +483,13 @@
           - name: Extract tag name
             run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
             shell: bash
-          - name: Set up JDK 21
+          - name: Set up JDK 17
             uses: actions/setup-java@v4
             with:
-              java-version: '21'
+              java-version: '17'
               distribution: 'temurin'          
           - name: Setup Android SDK
             uses: android-actions/setup-android@v3
-            with:
-              packages: 'platform-tools'
           - name: Setup Android build tools
             run: sdkmanager "build-tools;34.0.0"
   
